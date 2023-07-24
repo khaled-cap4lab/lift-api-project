@@ -1,0 +1,61 @@
+#%RAML 1.0
+title: lift-sapi
+
+
+/elevators:
+  get:
+    queryParameters:
+      status:
+        required: false
+        example: true
+        type: boolean
+      floor:
+        type: integer
+        required: false
+        example: 3
+          
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include /datatypes/call-lift-response-dataType.raml
+            example: !include /examples/call-lift-response-example.raml
+
+/elevator:
+  /{id}:
+    post:
+      body:
+        application/json:
+            type: !include /datatypes/create-call-request-dataType.raml
+            example: !include /examples/create-call-request-example.raml 
+      responses:
+            201:
+              body:
+                application/json:
+                  type: !include /datatypes/create-call-response-dataType.raml
+                  example: !include /examples/create-call-response-example.raml     
+
+    delete: 
+        queryParameters:
+          client-id:
+            required: true
+            example: 4454
+            type: integer
+          floor-number:
+            type: integer
+            required: true
+            example: 3
+        responses:
+          200:
+            description: Floor deleted successfully
+            body:
+              application/json:
+                type: !include /datatypes/delete-call-response-dataType.raml
+                example: !include /examples/delete-call-response-example.raml
+
+     
+
+
+
+    
+    

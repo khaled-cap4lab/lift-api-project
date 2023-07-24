@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:amqp="http://www.mulesoft.org/schema/mule/amqp" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd">
+	<amqp:config name="AMQP_Config" doc:name="AMQP Config" doc:id="60e81452-2dee-4c23-ba8d-a4ba2089ce4d" >
+		<amqp:connection host="localhost" username="guest" password="guest" />
+	</amqp:config>
+	<flow name="system-apiFlow" doc:id="73d17c47-0124-485b-98ff-fd6c59c578a2" >
+<!-- [STUDIO:"Logger"]		<logger level="INFO" doc:name="Logger" doc:id="0fb25e62-a647-4e21-9353-1e2d86e649c7" message="#[payload&#93;" /> [STUDIO] -->
+		<set-variable value="#[payload]" doc:name="request body" doc:id="f15e43c2-ea4a-4297-99dd-fee5283654b7" variableName="requestBody" />
+		<amqp:publish doc:name="Publish" doc:id="49d25e1a-ab21-4f83-9b9a-6219728782e5" config-ref="AMQP_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="0399bd8e-c132-4dc7-b3d6-b3e2534e9ef9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "request has been added to pending list"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
