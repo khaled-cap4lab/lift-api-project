@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="system-api-publish-test-suite.xml" />
+	<munit:test name="system-api-publish-test-suite-system-apiFlowTest" doc:id="5ec189c7-40b3-4a22-b727-f7992cb1f3cc" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="lift-sapi-main" />
+			<munit:enable-flow-source value="post:\elevator\(id):application\json:lift-sapi-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock amqp:publish proccessor" doc:id="158ef65d-d1f4-4dcd-a73c-ccaec4d64d7f" processor="amqp:publish">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Publish" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="direct1.exchange.demo" attributeName="exchangeName" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{&#10;  "destination-floor": 216,&#10;  "user-id": 216,&#10;  "timestamp": 216&#10;}]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event payload + attributes" doc:id="e2269612-26a9-479e-b65e-a35346e4828b" >
+				<munit:payload value='#[output application/json&#10;&#10;---&#10;{&#10;  "destination-floor": 216,&#10;  "user-id": 216,&#10;  "timestamp": 216&#10;}]' mediaType="application/json" />
+				<munit:attributes value="#[%dw 2.0&#10;output application/java&#10;&#10;---&#10;&#10;{&#10;    'headers': {&#10;        &quot;content-type&quot;: &quot;application/json&quot;,&#10;        &quot;user-agent&quot;: &quot;PostmanRuntime/7.32.3&quot;,&#10;        &quot;accept&quot;: &quot;*/*&quot;,&#10;        &quot;postman-token&quot;: &quot;2afc0911-b768-4d59-a7f5-759d723a6294&quot;,&#10;        &quot;host&quot;: &quot;localhost:8081&quot;,&#10;        &quot;accept-encoding&quot;: &quot;gzip, deflate, br&quot;,&#10;        &quot;connection&quot;: &quot;keep-alive&quot;,&#10;        &quot;content-length&quot;: &quot;72&quot;&#10;    },&#10;    'listenerPath': '/api/*',&#10;    'relativePath': '/api/elevator/216',&#10;    'version': 'HTTP/1.1',&#10;    'method': 'POST',&#10;    'scheme': 'http',&#10;    'requestPath': '/api/elevator/216',&#10;    'requestUri': '/api/elevator/216',&#10;    'rawRequestPath': '/api/elevator/216',&#10;    'localAddress': '127.0.0.1:8081',&#10;    'remoteAddress': '/127.0.0.1:54198'&#10;}&#10;as Object {&#10;    class: &quot;org.mule.extension.http.api.HttpRequestAttributes&quot;&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to system-apiFlow" doc:id="c98e428a-c88b-4dfb-922c-d119d64ab1d7" name="lift-sapi-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call at least 1" doc:id="403798e9-6528-419a-a91d-92123d561b04" processor="amqp:publish" atLeast="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Publish" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="direct1.exchange.demo" attributeName="exchangeName" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that notNullValue" doc:id="0bd0e466-c6f5-45f6-9b4a-e69c70661deb" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

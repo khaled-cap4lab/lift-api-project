@@ -8,6 +8,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<flow name="system-api-consumeFlow" doc:id="6b843c98-73b5-4a31-891c-5592e70cc532" >
 		<logger level="INFO" doc:name="Start Log" doc:id="5a38e1e5-df1d-4b70-99c4-fd36410ba07f" message='#["Start Log"]'/>
 		<amqp:consume doc:name="Consume" doc:id="b6406438-9a79-4b07-a284-e6e3167b6a7c" config-ref="AMQP_Config" queueName="elevator.demo.queue" />
+		<logger level="INFO" doc:name="payload after consume" doc:id="282b4100-ad13-4eed-a676-9e475ee4f14a" message="#[payload]"/>
 		<ee:transform doc:name="Transform Message" doc:id="137c7129-bb8b-4d98-b5e1-3fef1c20d03c" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

@@ -1,0 +1,25 @@
+%dw 2.0
+
+type auto_a658b082_d284_4700_929a_4b93a0f27567_Input_Attributes = {|
+  headers: {|
+    "content-type": String, 
+    "user-agent": String, 
+    accept: String, 
+    "postman-token": String, 
+    host: String, 
+    "accept-encoding": String, 
+    connection: String, 
+    "content-length": String
+  |}, 
+  listenerPath: String, 
+  relativePath: String, 
+  version: String, 
+  method: String, 
+  scheme: String, 
+  requestPath: String, 
+  requestUri: String, 
+  rawRequestPath: String, 
+  localAddress: String, 
+  remoteAddress: String
+|} {"class": "org.mule.extension.http.api.HttpRequestAttributes"}
+
