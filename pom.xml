@@ -58,6 +58,13 @@
 			<version>1.7.4</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
+		<dependency>
+			<groupId>368a8361-72e6-4582-a5a4-542390540d41</groupId>
+			<artifactId>lift-sapi</artifactId>
+			<version>1.0.0</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
+		</dependency>
 	</dependencies>
 
 	<repositories>

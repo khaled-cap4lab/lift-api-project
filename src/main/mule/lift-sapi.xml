@@ -114,7 +114,7 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="get:\elevators:lift-sapi-config">
-<!-- [STUDIO:"Transform Message"]        <ee:transform doc:name="Transform Message">
+        <!-- [STUDIO:"Transform Message"]        <ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -147,9 +147,9 @@ output application/json
 &#93;&#93;&#93;></ee:set-payload>
             </ee:message>
         </ee:transform> [STUDIO] -->
-		<flow-ref doc:name="Flow Reference to system-api-consumeFlow" doc:id="97243208-7d98-4255-ad7c-3f8c5415af7d" name="system-api-consumeFlow"/>
+        <flow-ref doc:name="Flow Reference to system-api-consumeFlow" doc:id="97243208-7d98-4255-ad7c-3f8c5415af7d" name="system-api-consumeFlow" />
     </flow>
     <flow name="post:\elevator\(id):application\json:lift-sapi-config">
-		<flow-ref doc:name="Flow Reference to system-api-publish-Flow" doc:id="f4c7741a-1af6-4a51-90a6-02e2cd95e7e6" name="system-apiFlow"/>
+        <flow-ref doc:name="Flow Reference to system-api-publish-Flow" doc:id="f4c7741a-1af6-4a51-90a6-02e2cd95e7e6" name="system-apiFlow" />
     </flow>
 </mule>

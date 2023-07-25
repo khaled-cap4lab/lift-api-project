@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amq
 		<amqp:connection host="localhost" username="guest" password="guest" />
 	</amqp:config>
 	<flow name="system-apiFlow" doc:id="73d17c47-0124-485b-98ff-fd6c59c578a2" >
-<!-- [STUDIO:"Logger"]		<logger level="INFO" doc:name="Logger" doc:id="0fb25e62-a647-4e21-9353-1e2d86e649c7" message="#[payload&#93;" /> [STUDIO] -->
+		<logger level="INFO" doc:name="Start Log" doc:id="e5e0996c-8a5a-460c-8c54-292fbddb1d96" message="#[payload]"/>
 		<set-variable value="#[payload]" doc:name="request body" doc:id="f15e43c2-ea4a-4297-99dd-fee5283654b7" variableName="requestBody" />
 		<amqp:publish doc:name="Publish" doc:id="49d25e1a-ab21-4f83-9b9a-6219728782e5" config-ref="AMQP_Config"/>
 		<ee:transform doc:name="Transform Message" doc:id="0399bd8e-c132-4dc7-b3d6-b3e2534e9ef9" >
@@ -22,5 +22,6 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Finish Log" doc:id="0fb25e62-a647-4e21-9353-1e2d86e649c7" message="#[payload]" />
 	</flow>
 </mule>
