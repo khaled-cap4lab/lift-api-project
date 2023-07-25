@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="system-api-consume-test-suite.xml" />
+	<munit:test name="system-api-consume-test-suite-system-api-consumeFlowTest" doc:id="fad10148-199d-435d-a4b5-48cb8e293b0c" description="Test">
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="lift-sapi-main" />
+			<munit:enable-flow-source value="get:\elevators:lift-sapi-config" />
+		</munit:enable-flow-sources>
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Consume processor" doc:id="0c8162b6-a3fb-4602-82b6-af14ad51d292" processor="amqp:consume">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Consume" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="elevator.demo.queue" attributeName="queueName" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[output application/json&#10;&#10;---&#10;&#10;&#10;{&#10;    "destination-floor": 216,&#10;    "user-id": 216,&#10;    "timestamp": 216&#10;}]' mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy Consume processor" doc:id="47172a3a-e726-4b9f-b7e4-07b0b922e825" processor="amqp:consume">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Consume" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="elevator.demo.queue" attributeName="queueName" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert-that doc:name="Assert that payload is Null" doc:id="2411f9c6-5d76-4e67-8d8d-6eb62b89ffb4" is="#[MunitTools::nullValue()]" expression="#[payload]"/>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert-that doc:name="Assert that payload is Not Null" doc:id="1affa296-7880-4f27-94d9-6937db91d275" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="d0f93ef3-94f8-4112-9dc8-b84f477f8ccd" >
+				<munit:attributes value="#[%dw 2.0&#10;output application/java&#10;&#10;---&#10;&#10;{&#10;    'headers': {&#10;        &quot;user-agent&quot;: &quot;PostmanRuntime/7.32.3&quot;,&#10;        &quot;accept&quot;: &quot;*/*&quot;,&#10;        &quot;postman-token&quot;: &quot;60b2a7c1-5486-4cf1-84ba-cfa97cb9a0ee&quot;,&#10;        &quot;host&quot;: &quot;localhost:8081&quot;,&#10;        &quot;accept-encoding&quot;: &quot;gzip, deflate, br&quot;,&#10;        &quot;connection&quot;: &quot;keep-alive&quot;&#10;    },&#10;    'listenerPath': '/api/*',&#10;    'relativePath': '/api/elevators',&#10;    'version': 'HTTP/1.1',&#10;    'method': 'GET',&#10;    'scheme': 'http',&#10;    'requestPath': '/api/elevators',&#10;    'requestUri': '/api/elevators?status=false&amp;floor=2',&#10;    'rawRequestPath': '/api/elevators',&#10;    'localAddress': '127.0.0.1:8081',&#10;    'remoteAddress': '/127.0.0.1:52314'&#10;}&#10;as Object {&#10;    class: &quot;org.mule.extension.http.api.HttpRequestAttributes&quot;&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to system-api-consumeFlow" doc:id="6616099e-62db-4f12-a83e-1f6d71a4034b" name="lift-sapi-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="558a6170-01b0-4663-94cb-3b75a2b5e67c" processor="amqp:consume" atLeast="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Consume" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="elevator.demo.queue" attributeName="queueName" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that payload is not null " doc:id="1eaee2fb-16ed-4256-8c20-e93b18fd5be1" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
