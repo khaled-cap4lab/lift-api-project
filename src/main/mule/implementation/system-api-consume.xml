@@ -6,9 +6,8 @@
 http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="system-api-consumeFlow" doc:id="6b843c98-73b5-4a31-891c-5592e70cc532" >
-		<logger level="INFO" doc:name="Start Log" doc:id="5a38e1e5-df1d-4b70-99c4-fd36410ba07f" message='#[payload]'/>
+		<logger level="INFO" doc:name="Start Log" doc:id="5a38e1e5-df1d-4b70-99c4-fd36410ba07f" message='#["Start Log"]'/>
 		<amqp:consume doc:name="Consume" doc:id="b6406438-9a79-4b07-a284-e6e3167b6a7c" config-ref="AMQP_Config" queueName="elevator.demo.queue" />
-		<logger level="INFO" doc:name="Logger" doc:id="7c08e589-6350-44e5-9492-7d34c51d29fd" message="#[payload]"/>
 		<ee:transform doc:name="Transform Message" doc:id="137c7129-bb8b-4d98-b5e1-3fef1c20d03c" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -17,6 +16,7 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Finish Log" doc:id="cf502be5-643a-44c7-a141-3b80a36d56f0" message="#[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7c08e589-6350-44e5-9492-7d34c51d29fd" message="#[payload]" />
+		<logger level="INFO" doc:name="Finish Log" doc:id="cf502be5-643a-44c7-a141-3b80a36d56f0" message='#["Finish Log"]'/>
 	</flow>
 </mule>
