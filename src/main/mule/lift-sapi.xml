@@ -14,7 +14,7 @@
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:error-response>
         </http:listener>
-		<logger level="INFO" doc:name="Log Attributes before APIkit" doc:id="cd84c27d-1993-4080-a7ef-3b2f6d7a5fdd" message="#[attributes]"/>
+<!-- [STUDIO:"Log Attributes before APIkit"]		<logger level="INFO" doc:name="Log Attributes before APIkit" doc:id="cd84c27d-1993-4080-a7ef-3b2f6d7a5fdd" message="#[attributes&#93;"/> [STUDIO] -->
 		<apikit:router config-ref="lift-sapi-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
